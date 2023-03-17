@@ -18,20 +18,11 @@ class Entreprise:
         self.entreprise=entreprise
         self.zone=zone
         self.phone=phone
-        print("="*150)
-        print("+"*10,"INITIATION D'UN SCRAPEUR","+"*10)
-        print("."*5,"LISTE DES INFORMATIONS A EXTRAIRE","-"*5)
-        print("-"*5,self.domaine,"--",self.service,"--",self.entreprise,"--",self.zone,"--",self.phone,"."*5)
-   
+        
     def pageMax(self,x):
         import re
         numbers = re.findall(r'\d+', x)  
         max_number = max(map(int, numbers)) 
-        print("="*150)
-    
-        print("+"*10,"NOMBRE DE PAGE DETECTES","+"*10)
-        print(max_number)
-
         return max_number
 
 
@@ -42,9 +33,6 @@ class Entreprise:
         for i in domaine:
             L.append(i.text)
             self.ld=L
-        print("="*150)
-        print("+"*10,"ENSEMBLE DE DOMAINES DISPONIBLES POUR CETTE PAGE","+"*10)
-     
         return self.ld
     
     def getDomaine(self,d):
@@ -52,8 +40,6 @@ class Entreprise:
             self.domaine=d
         else:
             self.domaine=None
-        print("="*150)
-        print("+"*10,"DOMAINE SELECTIONNE","+"*10)
         return self.domaine
     
     
@@ -61,8 +47,6 @@ class Entreprise:
         temp = driver.find_element(By.LINK_TEXT, self.getDomaine(d))
         temp.click()
         self.service=driver.current_url
-        print("="*150)
-        print("+"*10,"SERVICE CHOISI DANS CE DOMAINE","+"*10)
         return self.service
     
     def ListeService(self,d):
@@ -72,9 +56,6 @@ class Entreprise:
         services = driver.find_elements("xpath","//div[@class='flex gap-x-4 items-center']") #ENV SECRETE_3
         for i in services:
             L.append(i.text)
-        print("="*150)
-        print("+"*10,"LISTE D'OFFRES DISPONIBLE DANS CE SERVICE","+"*10)
-        print(L)
         return L
       
         
@@ -84,10 +65,6 @@ class Entreprise:
         dic = {}
         for i,j in zip(s,l):
             dic[i]=j
-        print("="*150)
-        print("+"*10,"OFFRE CHOISI","+"*10)
-        print("."*5,"CORRESPONDANCE (OFFRE, ADRESSE)","-"*5)
-        print(dic)
         return dic
 
     def getInfos(self,choix, demande):
@@ -146,9 +123,6 @@ class Entreprise:
             df.to_csv(f'data/{choix} - {demande}.csv')
         elif formats == "2":
             df.to_excel(f'data/{choix} - {demande}.xlsx')
-
-        print("="*150)
-        print("+"*10,"EXTRACTION DES CARACTERISTIQUES CI-DESSOUS MENTIONNEES","+"*10)
         return df.head(15)
     
     
